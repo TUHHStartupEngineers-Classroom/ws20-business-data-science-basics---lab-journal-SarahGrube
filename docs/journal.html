@@ -412,12 +412,84 @@ div.tocify {
 
 <p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
-<div id="my-first-post" class="section level1">
-<h1><span class="header-section-number">1</span> My first post</h1>
-<p>Last compiled: 2020-11-22</p>
+<div id="challenge-1" class="section level1">
+<h1><span class="header-section-number">1</span> Challenge 1</h1>
+<p>Last compiled: 2020-11-28</p>
 <p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
-<div id="second-level-header" class="section level2">
-<h2><span class="header-section-number">1.1</span> Second level header</h2>
+<div id="analyze-the-sales-by-states" class="section level2">
+<h2><span class="header-section-number">1.1</span> Analyze the sales by states</h2>
+<p>load the corresponging excel-sheet:</p>
+<pre class="r"><code># 1.0 Load libraries ----
+library(tidyverse)
+library(readxl) # excel-files
+library(magrittr)
+library(writexl)
+library(lubridate)
+
+# 2.0 Importing Files ----
+bikes_tbl &lt;- read_excel(path = &quot;DS_101/00_data/01_bike_sales/01_raw_data/bikes.xlsx&quot;)
+orderlines_tbl &lt;- read_excel(&quot;DS_101/00_data/01_bike_sales/01_raw_data/orderlines.xlsx&quot;)
+bikeshops_tbl  &lt;- read_excel(&quot;DS_101/00_data/01_bike_sales/01_raw_data/bikeshops.xlsx&quot;)
+
+# 3.0 Joining Data ----
+bike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;%
+  left_join(bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;)) %&gt;%
+  left_join(bikeshops_tbl, by = c(&quot;customer.id&quot; = &quot;bikeshop.id&quot;))
+
+# 4.0 Wrangling Data ----
+bike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl
+
+  # 4.1 Separate category name
+bike_orderlines_wrangled_tbl &lt;-  separate(bike_orderlines_wrangled_tbl, 
+           col    = location,
+           into   = c(&quot;city&quot;, &quot;state&quot;),
+           sep    = &quot;, &quot;)
+
+# 4.2 Add the total price (price * quantity) 
+bike_orderlines_wrangled_tbl &lt;- mutate(bike_orderlines_wrangled_tbl, total_price = price * quantity)
+
+# 4.3.4 You can reorder the data by selecting the columns in your desired order.
+bike_orderlines_wrangled_tbl &lt;- select(bike_orderlines_wrangled_tbl, city, state, total_price, everything()) 
+
+# 5.0 Business Insights ----
+# 5.1 Sales by State ----
+
+# Step 1 - Manipulate
+sales_by_location_tbl &lt;- bike_orderlines_wrangled_tbl
+
+# SALES BY STATE
+# Grouping by state and summarizing sales
+sales_by_state_tbl &lt;- group_by(sales_by_location_tbl, state) 
+sales_by_state_tbl&lt;- summarize(sales_by_state_tbl, sales = sum(total_price))
+
+sales_by_state_tbl &lt;- mutate(sales_by_state_tbl, sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                                                               decimal.mark = &quot;,&quot;, 
+                                                                               prefix = &quot;&quot;, 
+                                                                               suffix = &quot; €&quot;))
+
+# Step 2 - Visualize
+sales_by_state_tbl %&gt;%
+  # Setup canvas with the columns year (x-axis) and sales (y-axis)
+  ggplot(aes(x = state, y = sales)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  
+  # Geometries
+  geom_col(fill = &quot;#2DC6D6&quot;) + # Use geom_col for a bar plot
+  geom_label(aes(label = sales_text)) + # Adding labels to the bars
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) + # Adding a trendline
+  
+  # adjust it for euro values
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title    = &quot;Revenue per state&quot;,
+    #subtitle = &quot;Upward Trend&quot;,
+    x = &quot;&quot;, # Override defaults for x and y
+    y = &quot;Revenue&quot;
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
 <div id="third-level-header" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> third level header</h3>
@@ -427,7 +499,7 @@ div.tocify {
 </div>
 <div id="my-second-post-note-the-order" class="section level1">
 <h1><span class="header-section-number">2</span> My second post (note the order)</h1>
-<p>Last compiled: 2020-11-22</p>
+<p>Last compiled: 2020-11-28</p>
 <p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
 </div>
 <div id="adding-r-stuff" class="section level1">
@@ -436,7 +508,7 @@ div.tocify {
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
