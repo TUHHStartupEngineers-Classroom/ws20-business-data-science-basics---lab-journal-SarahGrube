@@ -418,7 +418,7 @@ div.tocify {
 <p>Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left.</p>
 <div id="analyze-the-sales-by-states" class="section level2">
 <h2><span class="header-section-number">1.1</span> Analyze the sales by states</h2>
-<p>load the corresponging excel-sheet:</p>
+<p>In the following code-window you can see the code for plotting the revenues of each state in a bar chart. As you can see in the figure, Nort Rhine-Westphalia has the highest revenues with 21200613 Euros.</p>
 <pre class="r"><code># 1.0 Load libraries ----
 library(tidyverse)
 library(readxl) # excel-files
@@ -463,13 +463,12 @@ sales_by_state_tbl &lt;- group_by(sales_by_location_tbl, state)
 sales_by_state_tbl&lt;- summarize(sales_by_state_tbl, sales = sum(total_price))
 
 sales_by_state_tbl &lt;- mutate(sales_by_state_tbl, sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
-                                                                               decimal.mark = &quot;,&quot;, 
-                                                                               prefix = &quot;&quot;, 
-                                                                               suffix = &quot; €&quot;))
+                             decimal.mark = &quot;,&quot;,prefix = &quot;&quot;, suffix = &quot; €&quot;))
 
 # Step 2 - Visualize
 sales_by_state_tbl %&gt;%
-  # Setup canvas with the columns year (x-axis) and sales (y-axis)
+  # Setup canvas with the columns state (x-axis) and sales (y-axis)
+ # {r plot, fig.width=10, fig.height=7}
   ggplot(aes(x = state, y = sales)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   
@@ -490,11 +489,56 @@ sales_by_state_tbl %&gt;%
     y = &quot;Revenue&quot;
   )</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>You can add more headers by adding more hashtags. These won’t be put into the table of contents</p>
-<div id="third-level-header" class="section level3">
-<h3><span class="header-section-number">1.1.1</span> third level header</h3>
-<p>Here’s an even lower level header</p>
 </div>
+<div id="analyze-the-sales-by-location-state-and-year" class="section level2">
+<h2><span class="header-section-number">1.2</span> Analyze the sales by location (state) and year</h2>
+<pre class="r"><code># 6.2 Sales by State and Year ----
+
+# Step 1 - Manipulate
+sales_by_year_state_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;%
+  
+  # Select columns and add a year
+  select(order.date, total_price, state) %&gt;%
+  mutate(year = year(order.date)) %&gt;%
+  
+  # Group by state and summarize year and main catgegory
+  group_by(state, year) %&gt;%
+  summarise(sales = sum(total_price)) %&gt;%
+  ungroup() %&gt;%
+  
+  # Format $ Text
+  mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                     decimal.mark = &quot;,&quot;, 
+                                     prefix = &quot;&quot;, 
+                                     suffix = &quot; €&quot;))
+
+# Step 2 - Visualize
+sales_by_year_state_tbl %&gt;%
+  
+  # Set up x, y, fill
+  ggplot(aes(x = year, y =sales, fill = state)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  
+  theme(legend.position = &quot;none&quot;)+
+  
+  # Geometries
+  geom_col() + # Run up to here to get a stacked bar plot
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) + # Adding a trendline
+  
+  # Facet
+  facet_wrap(~ state) +
+  
+  # Formatting
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title = &quot;Revenue by state and year&quot;,
+    fill = &quot;Main category&quot; # Changes the legend name
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Here’s an even lower level header</p>
 </div>
 </div>
 <div id="my-second-post-note-the-order" class="section level1">
@@ -508,7 +552,7 @@ sales_by_state_tbl %&gt;%
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
-<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
 </div>
 
