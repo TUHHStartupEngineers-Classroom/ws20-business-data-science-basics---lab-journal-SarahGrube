@@ -23,9 +23,17 @@ prices_tbl <- html_rennrad %>%
   html_nodes(css = ".catalog-category-model__price-current-value") %>%
   html_text() %>%
  stringr::str_extract("(?<=\\n).*(?=\\n)")
+ # as.numeric()
 
+prices_tbl <- gsub('[???]', '', prices_tbl)
+prices_tbl <- gsub('[]', '', prices_tbl)
+prices_tbl <- gsub("[[:space:]]", "", prices_tbl) 
+prices_tbl <- as.numeric(prices_tbl)
+
+
+prices_tbl <- mutate(prices_tbl, )
 # 4.0 create a list with bike-name and price
-list <- data.frame(Bike_name=rennrad_tbl,
-                    price=prices_tbl)
-list <- format(list, justify = "left")
-print(list,right=F)
+list2 <- data.frame(Bike_name=rennrad_tbl,
+                   price.in.Euros =prices_tbl)
+list2 <- format(list2, justify = "left")
+print(list2,right=F)
