@@ -32,11 +32,14 @@ In the following code-window you can see the code for plotting the revenues of e
 `r knitr::spin_child("task1_2.R")`
 
 # Challenge 2
-
+## Get some data via an API
 Last compiled: `r Sys.Date()`
+I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview. 
 
-I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom
+`r knitr::spin_child("task2_1.R")`
 
+## Get data from Rosebikes
+`r knitr::spin_child("task2_2.R")`
 # Adding R stuff
 
 So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 

@@ -414,7 +414,7 @@ div.tocify {
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
 <div id="challenge-1" class="section level1">
 <h1><span class="header-section-number">1</span> Challenge 1</h1>
-<p>Last compiled: 2020-11-28</p>
+<p>Last compiled: 2020-11-29</p>
 <div id="analyze-the-sales-by-states" class="section level2">
 <h2><span class="header-section-number">1.1</span> Analyze the sales by states</h2>
 <p>In the following code-window you can see the code for plotting the revenues of each state in a bar chart. As you can see in the figure, Nort Rhine-Westphalia has the highest revenues with 21200613 Euros.</p>
@@ -547,8 +547,90 @@ sales_by_year_state_tbl %&gt;%
 </div>
 <div id="challenge-2" class="section level1">
 <h1><span class="header-section-number">2</span> Challenge 2</h1>
-<p>Last compiled: 2020-11-28</p>
-<p>I’m writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom</p>
+<div id="get-some-data-via-an-api" class="section level2">
+<h2><span class="header-section-number">2.1</span> Get some data via an API</h2>
+<p>Last compiled: 2020-11-29 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
+<pre class="r"><code>library(httr)
+library(tibble)
+library(jsonlite)
+library(tidyverse)
+
+res &lt;- fromJSON(&#39;http://ergast.com/api/f1/2004/1/results.json&#39;)
+drivers &lt;- res$MRData$RaceTable$Races$Results[[1]]$Driver
+colnames(drivers)</code></pre>
+<pre><code>## [1] &quot;driverId&quot;        &quot;code&quot;            &quot;url&quot;             &quot;givenName&quot;      
+## [5] &quot;familyName&quot;      &quot;dateOfBirth&quot;     &quot;nationality&quot;     &quot;permanentNumber&quot;</code></pre>
+<pre class="r"><code>dirvers_list &lt;- drivers[1:8, c(&quot;givenName&quot;, &quot;familyName&quot;, &quot;code&quot;, &quot;nationality&quot;, &quot;dateOfBirth&quot;)]
+
+dirvers_list &lt;- mutate(dirvers_list, yearOfBirth = year(dateOfBirth))
+dirvers_list %&gt;%
+  arrange(yearOfBirth)</code></pre>
+<pre><code>##   givenName    familyName code nationality dateOfBirth yearOfBirth
+## 1   Michael    Schumacher  MSC      German  1969-01-03        1969
+## 2     David     Coulthard  COU     British  1971-03-27        1971
+## 3    Rubens   Barrichello  BAR   Brazilian  1972-05-23        1972
+## 4     Jarno        Trulli  TRU     Italian  1974-07-13        1974
+## 5      Ralf    Schumacher  SCH      German  1975-06-30        1975
+## 6      Juan Pablo Montoya  MON   Colombian  1975-09-20        1975
+## 7    Jenson        Button  BUT     British  1980-01-19        1980
+## 8  Fernando        Alonso  ALO     Spanish  1981-07-29        1981</code></pre>
+<pre class="r"><code>dirvers_list &lt;- select(dirvers_list, yearOfBirth, nationality, everything()) 
+dirvers_list</code></pre>
+<pre><code>##   yearOfBirth nationality givenName    familyName code dateOfBirth
+## 1        1969      German   Michael    Schumacher  MSC  1969-01-03
+## 2        1972   Brazilian    Rubens   Barrichello  BAR  1972-05-23
+## 3        1981     Spanish  Fernando        Alonso  ALO  1981-07-29
+## 4        1975      German      Ralf    Schumacher  SCH  1975-06-30
+## 5        1975   Colombian      Juan Pablo Montoya  MON  1975-09-20
+## 6        1980     British    Jenson        Button  BUT  1980-01-19
+## 7        1974     Italian     Jarno        Trulli  TRU  1974-07-13
+## 8        1971     British     David     Coulthard  COU  1971-03-27</code></pre>
+</div>
+<div id="get-data-from-rosebikes" class="section level2">
+<h2><span class="header-section-number">2.2</span> Get data from Rosebikes</h2>
+<pre class="r"><code># 1.0 Load Libraries
+library(tidyverse) # Main Package - Loads dplyr, purrr, etc.
+library(rvest)     # HTML Hacking &amp; Web Scraping
+library(xopen)     # Quickly opening URLs
+library(jsonlite)  # converts JSON files to R objects
+library(glue)      # concatenate strings
+library(stringi)   # character string/text processing
+
+# 2.0 Call the website
+# model names and prices for at least one category
+url_rennrad          &lt;- &quot;https://www.rosebikes.de/fahrr%C3%A4der/rennrad/race/x-lite-four-disc&quot;
+html_rennrad         &lt;- read_html(url_rennrad)
+
+# 3.0 Get the data
+# 3.1 Store the names of the bike model
+rennrad_tbl &lt;- html_rennrad %&gt;%
+  html_nodes(css = &quot;.catalog-category-model__title&quot;) %&gt;%
+  html_text() %&gt;%
+  stringr::str_extract(&quot;(?&lt;=\\n).*(?=\\n)&quot;)
+
+# 3.2 Store the prices
+prices_tbl &lt;- html_rennrad %&gt;%
+  html_nodes(css = &quot;.catalog-category-model__price-current-value&quot;) %&gt;%
+  html_text() %&gt;%
+ stringr::str_extract(&quot;(?&lt;=\\n).*(?=\\n)&quot;)
+
+# 4.0 create a list with bike-name and price
+list &lt;- data.frame(Bike_name=rennrad_tbl,
+                    price=prices_tbl)
+list &lt;- format(list, justify = &quot;left&quot;)
+list &lt;- print(list,right=F)</code></pre>
+<pre><code>##   Bike_name                       price     
+## 1 X-LITE FOUR DISC 105            2.699,00 \200
+## 2 X-LITE FOUR DISC Ultegra        2.999,00 \200
+## 3 X-LITE FOUR DISC Ultegra Di2    3.599,00 \200
+## 4 X-LITE FOUR DISC Force eTap AXS 3.799,00 \200</code></pre>
+<pre class="r"><code>list</code></pre>
+<pre><code>##                         Bike_name      price
+## 1 X-LITE FOUR DISC 105            2.699,00 \200
+## 2 X-LITE FOUR DISC Ultegra        2.999,00 \200
+## 3 X-LITE FOUR DISC Ultegra Di2    3.599,00 \200
+## 4 X-LITE FOUR DISC Force eTap AXS 3.799,00 \200</code></pre>
+</div>
 </div>
 <div id="adding-r-stuff" class="section level1">
 <h1><span class="header-section-number">3</span> Adding R stuff</h1>
