@@ -28,5 +28,4 @@ prices_tbl <- html_rennrad %>%
 list <- data.frame(Bike_name=rennrad_tbl,
                     price=prices_tbl)
 list <- format(list, justify = "left")
-list <- print(list,right=F)
-list
+print(list,right=F)
