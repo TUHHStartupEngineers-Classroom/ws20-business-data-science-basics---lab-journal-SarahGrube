@@ -38,8 +38,10 @@ I looked for an API which gives a list of historical motor racing drivers. First
 
 `r knitr::spin_child("task2_1.R")`
 
-## Get data from Rosebikes
+## Get data from a competitor of canyom
+For this challenge I chose to acquire date of the company rosebikes. Therefor I had a closer look on the race model X-LITE FOUR DISC. For this model you can find four sub-models which are listed in the following tabular together with its prices. 
 `r knitr::spin_child("task2_2.R")`
+
 # Adding R stuff
 
 So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place. 
