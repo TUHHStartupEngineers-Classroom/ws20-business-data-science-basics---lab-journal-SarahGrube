@@ -43,9 +43,9 @@ For this challenge I chose to acquire date of the company rosebikes. Therefor I 
 `r knitr::spin_child("task2_2.R")`
 
 <<<<<<< HEAD
-# Challenge 2
+# Challenge 3
 ## Task 1: Patent Dominance
-```{r calculation, eval=FALSE}
+```{r task3_1, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -93,14 +93,14 @@ top10 <- assigneeMergedCount[1:10]
 write_rds(top10, "top10.rds")
 ```
 
-```{r result}
+```{r result3_1}
 library(readr)
 library(data.table)
-result <- read_rds("top10.rds")
+result <- read_rds("02_data_wranging/top10.rds")
 result
 ```
 ## Task 2: Recent patent acitivity
-```{r calculation, eval=FALSE}
+```{r task3_2, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -142,15 +142,15 @@ top10_2019 <- patent2019_tbl[1:10]
 write_rds(top10_2019, "top10_2019.rds")
 ```
 
-```{r result}
+```{r result3_2}
 library(readr)
 library(data.table)
-result_2019 <- read_rds("top10_2019.rds")
+result_2019 <- read_rds("02_data_wranging/top10_2019.rds")
 result_2019
 ```
 
 ## Task 3: Top 5 main classes from the top 10 countries
-```{r calculation, eval=FALSE}
+```{r task3_3, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -192,10 +192,10 @@ top10_maincladdID <- mainclassID_tbl[1:5]
 write_rds(top10_maincladdID, "top10_mainclassID.rds")
 ```
 
-```{r result}
+```{r result3_3}
 library(readr)
 library(data.table)
-result_top5 <- read_rds("top10_mainclassID.rds")
+result_top5 <- read_rds("02_data_wranging/top10_mainclassID.rds")
 result_top5
 ```
 
