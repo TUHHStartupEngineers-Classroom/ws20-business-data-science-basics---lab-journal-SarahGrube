@@ -414,7 +414,7 @@ div.tocify {
 <p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
 <div id="challenge-1" class="section level1">
 <h1><span class="header-section-number">1</span> Challenge 1</h1>
-<p>Last compiled: 2020-11-29</p>
+<p>Last compiled: 2020-11-30</p>
 <div id="analyze-the-sales-by-states" class="section level2">
 <h2><span class="header-section-number">1.1</span> Analyze the sales by states</h2>
 <p>In the following code-window you can see the code for plotting the revenues of each state in a bar chart. As you can see in the figure, Nort Rhine-Westphalia has the highest revenues with 21200613 Euros.</p>
@@ -549,7 +549,7 @@ sales_by_year_state_tbl %&gt;%
 <h1><span class="header-section-number">2</span> Challenge 2</h1>
 <div id="get-some-data-via-an-api" class="section level2">
 <h2><span class="header-section-number">2.1</span> Get some data via an API</h2>
-<p>Last compiled: 2020-11-29 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
+<p>Last compiled: 2020-11-30 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
 <pre class="r"><code># 1.0 Load Libraries
 library(httr)
 library(tibble)
@@ -605,12 +605,10 @@ prices_tbl &lt;- html_rennrad %&gt;%
   html_nodes(css = &quot;.catalog-category-model__price-current-value&quot;) %&gt;%
   html_text() %&gt;%
  stringr::str_extract(&quot;(?&lt;=\\n).*(?=,)&quot;)
- # as.numeric()
 
 prices_tbl &lt;- gsub(&#39;[㠼㸰]&#39;, &#39;&#39;, prices_tbl)
 prices_tbl &lt;- gsub(&#39;[.]&#39;, &#39;,&#39;, prices_tbl)
-prices_tbl &lt;- gsub(&quot;[[:space:]]&quot;, &quot;&quot;, prices_tbl) 
-#prices_tbl &lt;- as.numeric(prices_tbl)
+prices_tbl &lt;- gsub(&quot;[[:space:]]&quot;, &quot;&quot;, prices_tbl)
 
 # 4.0 create a list with bike-name and price
 list2 &lt;- data.frame(Bike_name=rennrad_tbl,
@@ -622,16 +620,63 @@ print(list2,right=F)</code></pre>
 ## 2 X-LITE FOUR DISC Ultegra        2,999         
 ## 3 X-LITE FOUR DISC Ultegra Di2    3,599         
 ## 4 X-LITE FOUR DISC Force eTap AXS 3,799</code></pre>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD # Challenge 2 ## Task 1: Patent Dominance</p>
+<pre class="r"><code># 1.0 Load librarys
+library(tidyverse)
+library(vroom)
+library(data.table)
+library(vroom)
+
+# 2.0 Load Data: patent_assignee.tsv, assignee.tsv
+patentAssignee_tbl &lt;- vroom(
+  file       = &quot;patent_assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  # col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+assignee_tbl &lt;- vroom(
+  file       = &quot;assignee.tsv&quot;, 
+  delim      = &quot;\t&quot;, 
+  #col_types  = col_types,
+  na         = c(&quot;&quot;, &quot;NA&quot;, &quot;NULL&quot;)
+)
+
+# 3.0 Merge the data + create data table
+assigneeMerged &lt;- merge(x = patentAssignee_tbl, y = assignee_tbl, by.x=&#39;assignee_id&#39;, by.y = &quot;id&quot;, all = T)
+# create Data table
+class(assigneeMerged)
+setDT(assigneeMerged)
+class(assigneeMerged)
+assigneeMerged %&gt;% glimpse()
+
+
+# 4.0 group + sum by company
+setkey(assigneeMerged, &quot;organization&quot;)
+key(assigneeMerged)
+
+assigneeMergedCount &lt;- assigneeMerged %&gt;%
+  filter(!is.na(organization)) %&gt;%
+  count(organization) 
+
+assigneeMergedCount &lt;- assigneeMergedCount %&gt;%
+  arrange(desc(n))
+
+## List the 10 US companies with the most assigned/granted patents
+top10 &lt;- assigneeMergedCount[1:10]
+
+write_rds(top10, &quot;top10.rds&quot;)</code></pre>
 </div>
-</div>
-<div id="adding-r-stuff" class="section level1">
-<h1><span class="header-section-number">3</span> Adding R stuff</h1>
+<div id="task-2-recent-patent-acitivity" class="section level2">
+<h2><span class="header-section-number">2.3</span> Task 2: Recent patent acitivity</h2>
+<p>======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; parent of b52b1ff… task 3 # Adding R stuff</p>
 <p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
+</div>
 </div>
 
 
