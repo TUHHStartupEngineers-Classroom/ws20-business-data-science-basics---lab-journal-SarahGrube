@@ -93,7 +93,6 @@ top10 <- assigneeMergedCount[1:10]
 write_rds(top10, "top10.rds")
 ```
 
-`r knitr::spin_child("task3_1_2.R")`
 
 ## Task 2: Recent patent acitivity
 
