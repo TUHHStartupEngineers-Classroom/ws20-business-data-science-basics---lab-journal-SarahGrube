@@ -42,7 +42,6 @@ I looked for an API which gives a list of historical motor racing drivers. First
 For this challenge I chose to acquire date of the company rosebikes. Therefor I had a closer look on the race model X-LITE FOUR DISC. For this model you can find four sub-models which are listed in the following tabular together with its prices. 
 `r knitr::spin_child("task2_2.R")`
 
-<<<<<<< HEAD
 # Challenge 3
 ## Task 1: Patent Dominance
 ```{r task3_1, eval=FALSE}
@@ -99,6 +98,7 @@ library(data.table)
 result <- read_rds("02_data_wrangling/top10.rds")
 result
 ```
+
 ## Task 2: Recent patent acitivity
 ```{r task3_2, eval=FALSE}
 # 1.0 Load librarys
