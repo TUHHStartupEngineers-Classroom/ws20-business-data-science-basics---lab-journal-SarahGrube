@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sarah Grube" />
+
+<meta name="date" content="2020-11-05" />
+
+<title>Journal (reproducible report)</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MyLabJournal</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="journal.html">Journal</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Class notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dictionary.html">Dictionary</a>
+    </li>
+    <li>
+      <a href="data_wrangling.html">Data Wrangling</a>
+    </li>
+    <li>
+      <a href="ggplot_graphs.html">ggplot graphs</a>
+    </li>
+    <li>
+      <a href="machine_learning.html">machine learning</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Journal (reproducible report)</h1>
+<h4 class="author">Sarah Grube</h4>
+<h4 class="date">2020-11-05</h4>
+
+</div>
+
+
+<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
+<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
+<div id="challenge-1" class="section level1">
+<h1><span class="header-section-number">1</span> Challenge 1</h1>
+<p>Last compiled: 2020-11-29</p>
+<div id="analyze-the-sales-by-states" class="section level2">
+<h2><span class="header-section-number">1.1</span> Analyze the sales by states</h2>
+<p>In the following code-window you can see the code for plotting the revenues of each state in a bar chart. As you can see in the figure, Nort Rhine-Westphalia has the highest revenues with 21200613 Euros.</p>
+<pre class="r"><code># 1.0 Load Libraries
+library(tidyverse)
+library(readxl) # excel-files
+library(magrittr)
+library(writexl)
+library(lubridate)
+
+# 2.0 Importing Files ----
+bikes_tbl &lt;- read_excel(path = &quot;DS_101/00_data/01_bike_sales/01_raw_data/bikes.xlsx&quot;)
+orderlines_tbl &lt;- read_excel(&quot;DS_101/00_data/01_bike_sales/01_raw_data/orderlines.xlsx&quot;)
+bikeshops_tbl  &lt;- read_excel(&quot;DS_101/00_data/01_bike_sales/01_raw_data/bikeshops.xlsx&quot;)
+
+# 3.0 Joining Data ----
+bike_orderlines_joined_tbl &lt;- orderlines_tbl %&gt;%
+  left_join(bikes_tbl, by = c(&quot;product.id&quot; = &quot;bike.id&quot;)) %&gt;%
+  left_join(bikeshops_tbl, by = c(&quot;customer.id&quot; = &quot;bikeshop.id&quot;))
+
+# 4.0 Wrangling Data ----
+bike_orderlines_wrangled_tbl &lt;- bike_orderlines_joined_tbl
+
+# 4.1 Separate category name
+bike_orderlines_wrangled_tbl &lt;-  separate(bike_orderlines_wrangled_tbl, 
+                                          col    = location,
+                                          into   = c(&quot;city&quot;, &quot;state&quot;),
+                                          sep    = &quot;, &quot;)
+
+# 4.2 Add the total price (price * quantity) 
+bike_orderlines_wrangled_tbl &lt;- mutate(bike_orderlines_wrangled_tbl, total_price = price * quantity)
+
+# 4.3.4 You can reorder the data by selecting the columns in your desired order.
+bike_orderlines_wrangled_tbl &lt;- select(bike_orderlines_wrangled_tbl, city, state, total_price, everything()) 
+
+# 5.0 Business Insights ----
+# 5.1 Sales by State ----
+
+# Step 1 - Manipulate
+sales_by_location_tbl &lt;- bike_orderlines_wrangled_tbl
+
+# SALES BY STATE
+# Grouping by state and summarizing sales
+sales_by_state_tbl &lt;- group_by(sales_by_location_tbl, state) 
+sales_by_state_tbl&lt;- summarize(sales_by_state_tbl, sales = sum(total_price))
+
+sales_by_state_tbl &lt;- mutate(sales_by_state_tbl, sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                                                             decimal.mark = &quot;,&quot;,prefix = &quot;&quot;, suffix = &quot; €&quot;))
+
+# Step 2 - Visualize
+sales_by_state_tbl %&gt;%
+  # Setup canvas with the columns state (x-axis) and sales (y-axis)
+  # {r plot, fig.width=10, fig.height=7}
+  ggplot(aes(x = state, y = sales)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  
+  # Geometries
+  geom_col(fill = &quot;#2DC6D6&quot;) + # Use geom_col for a bar plot
+  geom_label(aes(label = sales_text)) + # Adding labels to the bars
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) + # Adding a trendline
+  
+  # adjust it for euro values
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title    = &quot;Revenue per state&quot;,
+    #subtitle = &quot;Upward Trend&quot;,
+    x = &quot;&quot;, # Override defaults for x and y
+    y = &quot;Revenue&quot;
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="analyze-the-sales-by-location-state-and-year" class="section level2">
+<h2><span class="header-section-number">1.2</span> Analyze the sales by location (state) and year</h2>
+<pre class="r"><code>library(tidyverse)
+library(readxl) # excel-files
+library(magrittr)
+library(writexl)
+library(lubridate)
+
+# 6.2 Sales by State and Year ----
+
+# Step 1 - Manipulate
+sales_by_year_state_tbl &lt;- bike_orderlines_wrangled_tbl %&gt;%
+  
+  # Select columns and add a year
+  select(order.date, total_price, state) %&gt;%
+  mutate(year = year(order.date)) %&gt;%
+  
+  # Group by state and summarize year and main catgegory
+  group_by(state, year) %&gt;%
+  summarise(sales = sum(total_price)) %&gt;%
+  ungroup() %&gt;%
+  
+  # Format $ Text
+  mutate(sales_text = scales::dollar(sales, big.mark = &quot;.&quot;, 
+                                     decimal.mark = &quot;,&quot;, 
+                                     prefix = &quot;&quot;, 
+                                     suffix = &quot; €&quot;))
+
+# Step 2 - Visualize
+sales_by_year_state_tbl %&gt;%
+  
+  # Set up x, y, fill
+  ggplot(aes(x = year, y =sales, fill = state)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  
+  theme(legend.position = &quot;none&quot;)+
+  
+  # Geometries
+  geom_col() + # Run up to here to get a stacked bar plot
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) + # Adding a trendline
+  
+  # Facet
+  facet_wrap(~ state) +
+  
+  # Formatting
+  scale_y_continuous(labels = scales::dollar_format(big.mark = &quot;.&quot;, 
+                                                    decimal.mark = &quot;,&quot;, 
+                                                    prefix = &quot;&quot;, 
+                                                    suffix = &quot; €&quot;)) +
+  labs(
+    title = &quot;Revenue by state and year&quot;,
+    fill = &quot;Main category&quot; # Changes the legend name
+  )</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="challenge-2" class="section level1">
+<h1><span class="header-section-number">2</span> Challenge 2</h1>
+<div id="get-some-data-via-an-api" class="section level2">
+<h2><span class="header-section-number">2.1</span> Get some data via an API</h2>
+<p>Last compiled: 2020-11-29 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
+<pre class="r"><code># 1.0 Load Libraries
+library(httr)
+library(tibble)
+library(jsonlite)
+library(tidyverse)
+
+# 1.0 Load API-data
+res &lt;- fromJSON(&#39;http://ergast.com/api/f1/2004/1/results.json&#39;)
+drivers &lt;- res$MRData$RaceTable$Races$Results[[1]]$Driver
+colnames(drivers)</code></pre>
+<pre><code>## [1] &quot;driverId&quot;        &quot;code&quot;            &quot;url&quot;             &quot;givenName&quot;      
+## [5] &quot;familyName&quot;      &quot;dateOfBirth&quot;     &quot;nationality&quot;     &quot;permanentNumber&quot;</code></pre>
+<pre class="r"><code># 2.0 Wrangling Data
+dirvers_list &lt;- drivers[1:8, c(&quot;givenName&quot;, &quot;familyName&quot;, &quot;code&quot;, &quot;nationality&quot;, &quot;dateOfBirth&quot;)]
+dirvers_list &lt;- mutate(dirvers_list, yearOfBirth = year(dateOfBirth))
+dirvers_list &lt;- select(dirvers_list, yearOfBirth, nationality, everything()) 
+print(dirvers_list,right=F)</code></pre>
+<pre><code>##   yearOfBirth nationality givenName familyName    code dateOfBirth
+## 1 1969        German      Michael   Schumacher    MSC  1969-01-03 
+## 2 1972        Brazilian   Rubens    Barrichello   BAR  1972-05-23 
+## 3 1981        Spanish     Fernando  Alonso        ALO  1981-07-29 
+## 4 1975        German      Ralf      Schumacher    SCH  1975-06-30 
+## 5 1975        Colombian   Juan      Pablo Montoya MON  1975-09-20 
+## 6 1980        British     Jenson    Button        BUT  1980-01-19 
+## 7 1974        Italian     Jarno     Trulli        TRU  1974-07-13 
+## 8 1971        British     David     Coulthard     COU  1971-03-27</code></pre>
+</div>
+<div id="get-data-from-a-competitor-of-canyom" class="section level2">
+<h2><span class="header-section-number">2.2</span> Get data from a competitor of canyom</h2>
+<p>For this challenge I chose to acquire date of the company rosebikes. Therefor I had a closer look on the race model X-LITE FOUR DISC. For this model you can find four sub-models which are listed in the following tabular together with its prices.</p>
+<pre class="r"><code># 1.0 Load Libraries
+library(tidyverse) # Main Package - Loads dplyr, purrr, etc.
+library(rvest)     # HTML Hacking &amp; Web Scraping
+library(xopen)     # Quickly opening URLs
+library(jsonlite)  # converts JSON files to R objects
+library(glue)      # concatenate strings
+library(stringi)   # character string/text processing
+
+# 2.0 Call the website
+# model names and prices for at least one category
+url_rennrad          &lt;- &quot;https://www.rosebikes.de/fahrr%C3%A4der/rennrad/race/x-lite-four-disc&quot;
+html_rennrad         &lt;- read_html(url_rennrad)
+
+# 3.0 Get the data
+# 3.1 Store the names of the bike model
+rennrad_tbl &lt;- html_rennrad %&gt;%
+  html_nodes(css = &quot;.catalog-category-model__title&quot;) %&gt;%
+  html_text() %&gt;%
+  stringr::str_extract(&quot;(?&lt;=\\n).*(?=\\n)&quot;)
+
+# 3.2 Store the prices
+prices_tbl &lt;- html_rennrad %&gt;%
+  html_nodes(css = &quot;.catalog-category-model__price-current-value&quot;) %&gt;%
+  html_text() %&gt;%
+ stringr::str_extract(&quot;(?&lt;=\\n).*(?=,)&quot;)
+ # as.numeric()
+
+prices_tbl &lt;- gsub(&#39;[㠼㸰]&#39;, &#39;&#39;, prices_tbl)
+prices_tbl &lt;- gsub(&#39;[.]&#39;, &#39;,&#39;, prices_tbl)
+prices_tbl &lt;- gsub(&quot;[[:space:]]&quot;, &quot;&quot;, prices_tbl) 
+#prices_tbl &lt;- as.numeric(prices_tbl)
+
+# 4.0 create a list with bike-name and price
+list2 &lt;- data.frame(Bike_name=rennrad_tbl,
+                   price_in_Euros = prices_tbl)
+list2 &lt;- format(list2, justify = &quot;left&quot;)
+print(list2,right=F)</code></pre>
+<pre><code>##   Bike_name                       price_in_Euros
+## 1 X-LITE FOUR DISC 105            2,699         
+## 2 X-LITE FOUR DISC Ultegra        2,999         
+## 3 X-LITE FOUR DISC Ultegra Di2    3,599         
+## 4 X-LITE FOUR DISC Force eTap AXS 3,799</code></pre>
+</div>
+</div>
+<div id="adding-r-stuff" class="section level1">
+<h1><span class="header-section-number">3</span> Adding R stuff</h1>
+<p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
+<p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
+<pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
+hist(samples)</code></pre>
+<p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
