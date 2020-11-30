@@ -96,7 +96,7 @@ write_rds(top10, "top10.rds")
 ```{r result3_1}
 library(readr)
 library(data.table)
-result <- read_rds("02_data_wranging/top10.rds")
+result <- read_rds("02_data_wrangling/top10.rds")
 result
 ```
 ## Task 2: Recent patent acitivity
@@ -145,7 +145,7 @@ write_rds(top10_2019, "top10_2019.rds")
 ```{r result3_2}
 library(readr)
 library(data.table)
-result_2019 <- read_rds("02_data_wranging/top10_2019.rds")
+result_2019 <- read_rds("02_data_wrangling/top10_2019.rds")
 result_2019
 ```
 
@@ -195,7 +195,7 @@ write_rds(top10_maincladdID, "top10_mainclassID.rds")
 ```{r result3_3}
 library(readr)
 library(data.table)
-result_top5 <- read_rds("02_data_wranging/top10_mainclassID.rds")
+result_top5 <- read_rds("02_data_wrangling/top10_mainclassID.rds")
 result_top5
 ```
 
