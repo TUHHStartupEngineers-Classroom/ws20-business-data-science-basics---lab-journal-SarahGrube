@@ -93,8 +93,111 @@ top10 <- assigneeMergedCount[1:10]
 write_rds(top10, "top10.rds")
 ```
 
-
+```{r result}
+library(readr)
+library(data.table)
+result <- read_rds("top10.rds")
+result
+```
 ## Task 2: Recent patent acitivity
+```{r calculation, eval=FALSE}
+# 1.0 Load librarys
+library(tidyverse)
+library(vroom)
+library(data.table)
+library(vroom)
+
+# 2.0 load necessary data
+
+col_types <- list(
+  id = col_character(),
+  country = col_character(),
+  date = col_date("%Y-%m-%d")
+)
+
+patent_tbl <- vroom(file = "patent.tsv", delim = "\t", col_types  = col_types, na = c("", "NA", "NULL"), col_select = c(id, country, date))
+# replace whole date by year
+patent_tbl <- mutate(patent_tbl, date = year(date))
+
+# load merged data-table from previous task
+assigneMerged_tbl <- read_rds("assigneMerged_tbl.rds")
+assigneMerged_tbl <- select(assigneMerged_tbl, patent_id, organization)
+
+# merge the tables
+patent_tbl <- merge(x = assigneMerged_tbl, y = patent_tbl, by.x='patent_id', by.y = "id", all = T)
+
+# select year 2019 and display in descending order
+patent2019_tbl <- patent_tbl %>% 
+  select(date, organization) %>%
+  filter(date == 2019)
+
+patent2019_tbl <- patent2019_tbl %>%
+  filter(!is.na(organization)) %>%
+  count(organization)
+
+patent2019_tbl <- patent2019_tbl %>%
+  arrange(desc(n))
+
+top10_2019 <- patent2019_tbl[1:10]
+write_rds(top10_2019, "top10_2019.rds")
+```
+
+```{r result}
+library(readr)
+library(data.table)
+result_2019 <- read_rds("top10_2019.rds")
+result_2019
+```
+
+## Task 3: Top 5 main classes from the top 10 countries
+```{r calculation, eval=FALSE}
+# 1.0 Load librarys
+library(tidyverse)
+library(vroom)
+library(data.table)
+library(vroom)
+
+# 2.0 load necessary data
+uspc_tbl <- vroom(
+  file       = "uspc.tsv", 
+  delim      = "\t", 
+  na         = c("", "NA", "NULL")
+)
+
+# top 10 countries which have been determined in task 1
+top10_tbl <- read_rds("top10.rds")
+top10_tbl <- top10_tbl$organization
+
+# load merged data-table from previous task (assignee + patent_assignee)
+assigneMerged_tbl <- read_rds("assigneMerged_tbl.rds")
+assigneMerged_tbl <- select(assigneMerged_tbl, patent_id, organization)
+
+# 3.0 Data processing
+# merge the tables by patent_id
+assigneMerged_tbl <- merge(x = assigneMerged_tbl, y = uspc_tbl, by.x='patent_id', by.y = "patent_id", all = T) 
+
+# filter out NA-values and only show top-10-countries
+assigneMerged_tbl <- assigneMerged_tbl %>%
+  filter(!is.na(mainclass_id))
+assigneMerged_tbl <- assigneMerged_tbl %>%
+  filter(organization %in% top10_tbl)
+
+# calculate top 10 main classes
+mainclassID_tbl <- assigneMerged_tbl %>%
+ count(mainclass_id)
+mainclassID_tbl <- arrange(mainclassID_tbl, desc(n))
+
+# save result
+top10_maincladdID <- mainclassID_tbl[1:5]
+write_rds(top10_maincladdID, "top10_mainclassID.rds")
+```
+
+```{r result}
+library(readr)
+library(data.table)
+result_top5 <- read_rds("top10_mainclassID.rds")
+result_top5
+```
 
 =======
 >>>>>>> parent of b52b1ff... task 3
