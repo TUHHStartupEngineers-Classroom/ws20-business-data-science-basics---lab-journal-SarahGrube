@@ -2,8 +2,7 @@
 library(tidyverse)
 library(ggrepel)
 
-
-
+# 2.0 Load + merge data
 death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/csv") %>%
   select(deaths, countriesAndTerritories, popData2019,dateRep, countryterritoryCode) %>%
   mutate(across(countriesAndTerritories, str_replace_all, "_", " ")) %>%
@@ -18,9 +17,7 @@ death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/
   mutate(deaths = (deaths/popData2019)*100) %>%
   select(countriesAndTerritories, deaths)
 
-palette = colorRampPalette(brewer.pal(n=7, name='Oranges'))(7)
-palette = c("white", palette)
-
+# 3.0 Create the worldmap with death-rates
   world <- map_data("world")
   life.exp.map <- merge(x=death_tbl, y=world_map, by.x = "countriesAndTerritories", by.y = "region")
   
@@ -35,5 +32,7 @@ palette = c("white", palette)
       y = "Latitude"
     ) +
     scale_fill_continuous(name = "Death in %")
-    
+  fpath <- system.file("02_data_wrangling/Challenge4_2_world.png",package='imager') 
+  im <- load.image(fpath)
+  plot(im)
   
