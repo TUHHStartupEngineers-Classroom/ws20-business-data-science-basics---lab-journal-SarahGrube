@@ -15,13 +15,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 ```
-
-**IMPORTANT:** You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.
-
-This is an `.Rmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
+BASIC DATA SCIENCE BASIC: Lab-journal over the Challenge which had to be solved.
 
 # Challenge 1
-
 Last compiled: `r Sys.Date()`
 
 ## Analyze the sales by states
@@ -34,6 +30,7 @@ In the following code-window you can see the code for plotting the revenues of e
 # Challenge 2
 ## Get some data via an API
 Last compiled: `r Sys.Date()`
+
 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview. 
 
 `r knitr::spin_child("task2_1.R")`
@@ -43,7 +40,10 @@ For this challenge I chose to acquire date of the company rosebikes. Therefor I 
 `r knitr::spin_child("task2_2.R")`
 
 # Challenge 3
+In this challenge 3 questions had do be answered.
 ## Task 1: Patent Dominance
+What US company / corporation has the most patents? List the 10 US companies with the most assigned/granted patents.
+To answer this question I summed the patents per company and listed the number of total patents by descending order so that the top-10-companies could be found in the first 10 columns.
 ```{r task3_1, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
@@ -100,6 +100,8 @@ result
 ```
 
 ## Task 2: Recent patent acitivity
+What US company had the most patents granted in 2019? List the top 10 companies with the most new granted patents for 2019.
+To solve this task I first merged put all the tables into one table and removed all datas which weren't from 2019. Than again I counted the number of patents per company and sorted the number in descending order.
 ```{r task3_2, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
@@ -150,6 +152,9 @@ result_2019
 ```
 
 ## Task 3: Top 5 main classes from the top 10 countries
+What is the most innovative tech sector? For the top 10 companies (worldwide) with the most patents, what are the top 5 USPTO tech main classes?
+
+For this task I filtered the merged tables by the top-10-countries from the previous task. The created data set only contains the data from the top-10-countries and thus the task could be solved easily by counting and arranging in descendant order.
 ```{r task3_3, eval=FALSE}
 # 1.0 Load librarys
 library(tidyverse)
@@ -201,7 +206,12 @@ result_top5
 
 # Challenge 4
 ## Graph with the cumulative COVID-19 cases
-```{r task4_2, eval=FALSE}
+Map the time course of the cumulative Covid-19 cases!
+
+First of all I loaded the necessary data and filtered it by the year 2020. As the cumulative cases were already given in the data-set, I plotted the cumulative-case-value for each day.
+I used labels in the graph to plot the most recent Cumulative-case-value from the displayed countries.
+
+```{r task4_1, eval=FALSE}
 # 1.0 Library
 library(tidyverse)
 library(ggrepel)
@@ -265,7 +275,9 @@ labs(
 ![World Map showing the death-rate.](COVID_1.png)
 
 ## World-map with COVID-19 deaths relative to population size
-Map which shows the COVID-19 death-rates in precentage
+Visualize the distribution of the mortality rate (deaths / population) with geom_map().
+
+For solving this task I first loaded the necessary data and then the world-map could be createt with the help of map_data("world") and the geom_map function.
 ```{r task4_2, eval=FALSE}
 # 1.0 Library
 library(tidyverse)

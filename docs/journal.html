@@ -801,6 +801,69 @@ result_top5</code></pre>
 <h1><span class="header-section-number">4</span> Challenge 4</h1>
 <div id="graph-with-the-cumulative-covid-19-cases" class="section level2">
 <h2><span class="header-section-number">4.1</span> Graph with the cumulative COVID-19 cases</h2>
+<pre class="r"><code># 1.0 Library
+library(tidyverse)
+library(ggrepel)
+
+#2.0 Load + merge Data
+covid_data_tbl &lt;- read_csv(&quot;https://opendata.ecdc.europa.eu/covid19/casedistribution/csv&quot;) %&gt;%
+  select(month, year, day, countriesAndTerritories, starts_with(&quot;Cumulative_number_for&quot;),dateRep) %&gt;%
+  mutate(across(countriesAndTerritories, str_replace_all, &quot;_&quot;, &quot; &quot;)) %&gt;%
+  mutate(countriesAndTerritories = case_when(
+    countriesAndTerritories == &quot;United Kingdom&quot; ~ &quot;UK&quot;,
+    countriesAndTerritories == &quot;United States of America&quot; ~ &quot;USA&quot;,
+    countriesAndTerritories == &quot;Czechia&quot; ~ &quot;Czech Republic&quot;,
+    TRUE ~ countriesAndTerritories
+  )) %&gt;%
+  filter(countriesAndTerritories %in% c(&quot;Germany&quot;, &quot;UK&quot;, &quot;France&quot;, &quot;Spain&quot;, &quot;USA&quot;)) %&gt;%
+  filter(year == 2020) %&gt;%
+  filter(month &lt; 12) %&gt;%
+  group_by(countriesAndTerritories, month) %&gt;%
+  ungroup()
+
+names(covid_data_tbl)[5] &lt;- &quot;Cumulative_number&quot;
+
+# variables for labeling the newest COVID-number
+xy &lt;- covid_data_tbl %&gt;%
+  filter(dateRep == &quot;30/11/2020&quot;)
+
+label = xy$Cumulative_number
+
+y &lt;- xy$Cumulative_number
+x&lt;- as.Date(lubridate::dmy(xy$dateRep))
+  
+# 3.0 Create Graph
+covid_data_tbl %&gt;%
+  ggplot(aes(as.Date(lubridate::dmy(dateRep)), Cumulative_number, color = countriesAndTerritories)) +
+  geom_line(size = 1) +
+
+labs(
+  title = str_glue(&quot;Cumulative COVID-19 cases per wodlwide&quot;),
+  subtitle = str_glue(
+    &quot;Start: {(min(lubridate::dmy(covid_data_tbl$dateRep)))}
+               End:  {(max(lubridate::dmy(covid_data_tbl$dateRep)))}&quot;),
+  x = &quot;Year 2020&quot;,
+  y = &quot;Cumulative Cases&quot;
+) +
+  
+  scale_x_date(breaks = function(x) seq.Date(from = min(x), 
+                                             to = max(x), 
+                                             by = &quot;1 month&quot;)) +
+  
+  scale_color_manual(&quot;Countries:&quot;, values=c(&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;, &quot;purple&quot;, &quot;black&quot;), labels = waiver())+
+  guides(col = guide_legend(nrow = 2))+
+  
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = &quot;bottom&quot;,
+    plot.title = element_text(face = &quot;bold&quot;),
+    plot.caption = element_text(face = &quot;bold.italic&quot;, color = &quot;blue4&quot;)
+  ) +
+  geom_label_repel(aes(x = x, y = y, label = label), data = xy)</code></pre>
+<div class="figure">
+<img src="COVID_1.png" alt="" />
+<p class="caption">World Map showing the death-rate.</p>
+</div>
 </div>
 <div id="world-map-with-covid-19-deaths-relative-to-population-size" class="section level2">
 <h2><span class="header-section-number">4.2</span> World-map with COVID-19 deaths relative to population size</h2>
@@ -841,36 +904,16 @@ death_tbl &lt;- read_csv(&quot;https://opendata.ecdc.europa.eu/covid19/casedistr
     scale_fill_continuous(name = &quot;Death in %&quot;)</code></pre>
 <div class="figure">
 <img src="Challenge4_2_world_2.png" alt="" />
-<p class="caption">Worls Map.</p>
+<p class="caption">World Map showing the death-rate.</p>
 </div>
-<pre class="r"><code>  library(magick)
-  im &lt;- image_read(&quot;Challenge4_2_world_2.png&quot;)
-  plot(im)</code></pre>
-</div>
-</div>
-<div id="section" class="section level1">
-<h1><span class="header-section-number">5</span> <img src="journal_files/figure-html/result4_2-1.png" width="672" /></h1>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>parent of b52b1ff… task 3 # Adding R stuff</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; parent of b52b1ff… task 3 # Adding R stuff</p>
 <p>So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the same place.</p>
 <p>So, let’s say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation = 1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:</p>
 <pre class="r"><code>samples &lt;- rnorm(100, mean=0, sd=1)
 hist(samples)</code></pre>
 <p><img src="journal_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag) from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You’ll learn that all of these things and more can be customized in each R code block.</p>
+</div>
 </div>
 
 
