@@ -203,7 +203,7 @@ result_top5
 ## Graph with the cumulative COVID-19 cases
 
 ## World-map with COVID-19 deaths relative to population size
-Map
+Map which shows the COVID-19 death-rates in precentage
 ```{r task4_2, eval=FALSE}
 # 1.0 Library
 library(tidyverse)
@@ -243,7 +243,8 @@ death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/
 
 ```{r result4_2}
   library(magick)
-  image_read("Challenge4_2_world_2.png")
+  im <- image_read("Challenge4_2_world_2.png")
+  plot(im)
 ```
 =======
 >>>>>>> parent of b52b1ff... task 3

@@ -38,4 +38,5 @@ death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/
   
   
   library(magick)
-  image_read("Challenge4_2_world.png")
+ im <- image_read("Challenge4_2_world_2.png")
+ plot(im)
