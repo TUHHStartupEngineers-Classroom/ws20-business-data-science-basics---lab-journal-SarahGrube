@@ -201,7 +201,10 @@ result_top5
 
 # Challenge 4
 ## Graph with the cumulative COVID-19 cases
-```{r task3_3, eval=FALSE}
+
+## World-map with COVID-19 deaths relative to population size
+Map
+```{r task4_2, eval=FALSE}
 # 1.0 Library
 library(tidyverse)
 library(ggrepel)
@@ -238,7 +241,7 @@ death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/
     scale_fill_continuous(name = "Death in %")
 ```
 
-```{r result3_3}
+```{r result4_2}
   library(magick)
   image_read("Challenge4_2_world_2.png")
 ```
