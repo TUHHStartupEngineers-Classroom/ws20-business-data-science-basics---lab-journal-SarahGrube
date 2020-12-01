@@ -410,8 +410,7 @@ div.tocify {
 </div>
 
 
-<p><strong>IMPORTANT:</strong> You can delete everything in here and start fresh. You might want to start by not deleting anything above this line until you know what that stuff is doing.</p>
-<p>This is an <code>.Rmd</code> file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a # in front of your text, it will create a top level-header.</p>
+<p>BASIC DATA SCIENCE BASIC: Lab-journal over the Challenge which had to be solved.</p>
 <div id="challenge-1" class="section level1">
 <h1><span class="header-section-number">1</span> Challenge 1</h1>
 <p>Last compiled: 2020-12-01</p>
@@ -549,7 +548,8 @@ sales_by_year_state_tbl %&gt;%
 <h1><span class="header-section-number">2</span> Challenge 2</h1>
 <div id="get-some-data-via-an-api" class="section level2">
 <h2><span class="header-section-number">2.1</span> Get some data via an API</h2>
-<p>Last compiled: 2020-12-01 I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
+<p>Last compiled: 2020-12-01</p>
+<p>I looked for an API which gives a list of historical motor racing drivers. First of all I had a look at all given datas. After that I picked a few categories which gve information over the drivers and sorted the drivers by the year birth. Furthermore I resorted the columns and added an additional line which only contains the year of birth and placed it as first column to have a better overview.</p>
 <pre class="r"><code># 1.0 Load Libraries
 library(httr)
 library(tibble)
@@ -624,8 +624,7 @@ print(list2,right=F)</code></pre>
 </div>
 <div id="challenge-3" class="section level1">
 <h1><span class="header-section-number">3</span> Challenge 3</h1>
-<div id="task-1-patent-dominance" class="section level2">
-<h2><span class="header-section-number">3.1</span> Task 1: Patent Dominance</h2>
+<p>In this challenge 3 questions had do be answered. ## Task 1: Patent Dominance What US company / corporation has the most patents? List the 10 US companies with the most assigned/granted patents. To answer this question I summed the patents per company and listed the number of total patents by descending order so that the top-10-companies could be found in the first 10 columns.</p>
 <pre class="r"><code># 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -686,9 +685,9 @@ result</code></pre>
 ##  8:                           Intel Corporation  42157
 ##  9:                             Fujitsu Limited  37197
 ## 10:   Hewlett-Packard Development Company, L.P.  35573</code></pre>
-</div>
 <div id="task-2-recent-patent-acitivity" class="section level2">
-<h2><span class="header-section-number">3.2</span> Task 2: Recent patent acitivity</h2>
+<h2><span class="header-section-number">3.1</span> Task 2: Recent patent acitivity</h2>
+<p>What US company had the most patents granted in 2019? List the top 10 companies with the most new granted patents for 2019. To solve this task I first merged put all the tables into one table and removed all datas which weren’t from 2019. Than again I counted the number of patents per company and sorted the number in descending order.</p>
 <pre class="r"><code># 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -745,7 +744,9 @@ result_2019</code></pre>
 ## 10:               Huawei Technologies Co., Ltd. 2454</code></pre>
 </div>
 <div id="task-3-top-5-main-classes-from-the-top-10-countries" class="section level2">
-<h2><span class="header-section-number">3.3</span> Task 3: Top 5 main classes from the top 10 countries</h2>
+<h2><span class="header-section-number">3.2</span> Task 3: Top 5 main classes from the top 10 countries</h2>
+<p>What is the most innovative tech sector? For the top 10 companies (worldwide) with the most patents, what are the top 5 USPTO tech main classes?</p>
+<p>For this task I filtered the merged tables by the top-10-countries from the previous task. The created data set only contains the data from the top-10-countries and thus the task could be solved easily by counting and arranging in descendant order.</p>
 <pre class="r"><code># 1.0 Load librarys
 library(tidyverse)
 library(vroom)
@@ -801,6 +802,8 @@ result_top5</code></pre>
 <h1><span class="header-section-number">4</span> Challenge 4</h1>
 <div id="graph-with-the-cumulative-covid-19-cases" class="section level2">
 <h2><span class="header-section-number">4.1</span> Graph with the cumulative COVID-19 cases</h2>
+<p>Map the time course of the cumulative Covid-19 cases!</p>
+<p>First of all I loaded the necessary data and filtered it by the year 2020. As the cumulative cases were already given in the data-set, I plotted the cumulative-case-value for each day. I used labels in the graph to plot the most recent Cumulative-case-value from the displayed countries.</p>
 <pre class="r"><code># 1.0 Library
 library(tidyverse)
 library(ggrepel)
@@ -867,7 +870,8 @@ labs(
 </div>
 <div id="world-map-with-covid-19-deaths-relative-to-population-size" class="section level2">
 <h2><span class="header-section-number">4.2</span> World-map with COVID-19 deaths relative to population size</h2>
-<p>Map which shows the COVID-19 death-rates in precentage</p>
+<p>Visualize the distribution of the mortality rate (deaths / population) with geom_map().</p>
+<p>For solving this task I first loaded the necessary data and then the world-map could be createt with the help of map_data(“world”) and the geom_map function.</p>
 <pre class="r"><code># 1.0 Library
 library(tidyverse)
 library(ggrepel)
