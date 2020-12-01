@@ -241,11 +241,8 @@ death_tbl <- read_csv("https://opendata.ecdc.europa.eu/covid19/casedistribution/
     scale_fill_continuous(name = "Death in %")
 ```
 
-```{r result4_2}
-  library(magick)
-  im <- image_read("Challenge4_2_world_2.png")
-  plot(im)
-```
+![World Map showing the death-rate.](Challenge4_2_world_2.png)
+
 =======
 >>>>>>> parent of b52b1ff... task 3
 # Adding R stuff
